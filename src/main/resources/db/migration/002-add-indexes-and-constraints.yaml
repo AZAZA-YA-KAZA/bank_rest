@@ -1,0 +1,46 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-unique-constraints-and-fks
+      author: dev
+      changes:
+        - addPrimaryKey:
+            tableName: user_roles
+            columnNames: user_id, role_id
+            constraintName: pk_user_roles
+
+        - addForeignKeyConstraint:
+            baseTableName: user_roles
+            baseColumnNames: user_id
+            constraintName: fk_user_roles_user
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - addForeignKeyConstraint:
+            baseTableName: user_roles
+            baseColumnNames: role_id
+            constraintName: fk_user_roles_role
+            referencedTableName: roles
+            referencedColumnNames: id
+            onDelete: RESTRICT
+
+        - createIndex:
+            tableName: users
+            indexName: idx_users_username
+            columns:
+              - column:
+                  name: username
+
+      rollback:
+        - dropIndex:
+            indexName: idx_users_username
+            tableName: users
+        - dropForeignKeyConstraint:
+            baseTableName: user_roles
+            constraintName: fk_user_roles_user
+        - dropForeignKeyConstraint:
+            baseTableName: user_roles
+            constraintName: fk_user_roles_role
+        - dropPrimaryKey:
+            tableName: user_roles
+            constraintName: pk_user_roles

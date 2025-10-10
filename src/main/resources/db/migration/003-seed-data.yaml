@@ -1,0 +1,65 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-seed-roles-users
+      author: dev
+      changes:
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 1
+              - column:
+                  name: name
+                  value: ROLE_ADMIN
+
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 2
+              - column:
+                  name: name
+                  value: ROLE_USER
+
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 1
+              - column:
+                  name: username
+                  value: admin
+              - column:
+                  name: password
+                  # Вставляй уже захэшированный пароль (например BCrypt). Ниже пример-заглушка.
+                  value: "$2a$10$EXAMPLEHASHEDPASSWORD"
+              - column:
+                  name: email
+                  value: admin@example.com
+              - column:
+                  name: enabled
+                  valueBoolean: true
+
+        - insert:
+            tableName: user_roles
+            columns:
+              - column:
+                  name: user_id
+                  valueNumeric: 1
+              - column:
+                  name: role_id
+                  valueNumeric: 1
+
+      rollback:
+        - delete:
+            tableName: user_roles
+            where: user_id = 1 and role_id = 1
+        - delete:
+            tableName: users
+            where: id = 1
+        - delete:
+            tableName: roles
+            where: id in (1,2)
