@@ -1,12 +1,13 @@
-package com.example.bankcards.dto;
+package com.example.bankcards.entity;
 
+import com.example.bankcards.util.UserRole;
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Table(name = "user")
 @Entity
 @Data
-public class User {
+public class UserJpa {
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,9 +26,21 @@ public class User {
     private String telephone;
     @Column(name = "password", length = 50)
     private String password;
+    @Enumerated(EnumType.STRING)
     @Column(name = "role", length = 50)
-    private String role;
-    @Column(name = "create_at", length = 50)
-    private String createAt;
+    private UserRole role;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private AccountJpa account;
 
+
+    public UserJpa(String username, String firstName, String surName, String patronymic, String email, String telephone, String password, UserRole role) {
+        this.username = username;
+        this.firstName = firstName;
+        this.surName = surName;
+        this.patronymic = patronymic;
+        this.email = email;
+        this.telephone = telephone;
+        this.password = password;
+        this.role = role;
+    }
 }
