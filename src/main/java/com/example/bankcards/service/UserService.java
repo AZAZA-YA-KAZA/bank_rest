@@ -4,25 +4,35 @@ import com.example.bankcards.dto.UserDTO;
 import com.example.bankcards.entity.UserJpa;
 import com.example.bankcards.repository.UserJpaRepository;
 import com.example.bankcards.util.UserRole;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
     private final UserJpaRepository userJpaRepository;
-
-    public UserService(UserJpaRepository userJpaRepository) {
+    private  final PasswordEncoder passwordEncoder;
+    public UserService(UserJpaRepository userJpaRepository, PasswordEncoder passwordEncoder) {
         this.userJpaRepository = userJpaRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public UserDTO createUser(String username, String firstName, String surName, String patronymic, String email, String telephone, String password, String role) {
+    //доработать
+    public UserJpa updateUser(String username, String firstName, String surName, String patronymic, String email, String telephone, String password, String role) {
         UserRole userRole;
         try {
             userRole = UserRole.valueOf(role.toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Invalid role: " + role);
         }
+        UserDTO userDTO = new UserDTO(
+                username,
+                firstName,
+                surName,
+                patronymic,
+                email,
+                telephone
+        );
 
-        // Создание объекта UserJpa с зашифрованным паролем
         UserJpa userJpa = new UserJpa(
                 username,
                 firstName,
@@ -33,20 +43,11 @@ public class UserService {
                 passwordEncoder.encode(password), // Шифрование пароля
                 userRole
         );
+        return userJpaRepository.save(userJpa);
+    }
 
-        // Сохранение пользователя в базе данных
-        UserJpa savedUser = userJpaRepository.save(userJpa);
+    public UserJpa getById(Long userId) {
+        return userJpaRepository.getById(Math.toIntExact(userId));
 
-        // Создание и возврат UserDTO
-        return new UserDTO(
-                savedUser.getUsername(),
-                savedUser.getFirstName(),
-                savedUser.getSurName(),
-                savedUser.getPatronymic(),
-                savedUser.getEmail(),
-                savedUser.getTelephone(),
-                null, // Не возвращаем пароль в DTO
-                savedUser.getRole()
-        );
     }
 }
