@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-public interface UserJpaRepository extends JpaRepository<UserJpa, Integer> {
+public interface UserJpaRepository extends JpaRepository<UserJpa, Long> {
     @Query("SELECT COUNT(u) FROM UserJpa as u WHERE username = :username")
     Boolean existsByUsername(@Param("username") String useername);
 

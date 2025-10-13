@@ -53,12 +53,12 @@ public class UserService {
     }
 
     public UserJpa getById(Long userId) {
-        return userJpaRepository.getById(Math.toIntExact(userId));
+        return userJpaRepository.getById(userId);
 
     }
 
     public String deleteUser(Long userId) {
-        userJpaRepository.deleteById(Math.toIntExact(userId));
+        userJpaRepository.deleteById(userId);
         return "Ok";
     }
 }

@@ -13,7 +13,7 @@ public class AccountDTO {
     private String accountNumber;
     private LocalDateTime createAt = LocalDateTime.now();
 
-    public AccountDTO(Long userId, Long balance, String accountNumber, Long fromTransations, Long toTransactions) {
+    public AccountDTO(Long userId, Long balance, String accountNumber) {
         this.userId = userId;
         this.balance = balance;
         this.accountNumber = accountNumber;
