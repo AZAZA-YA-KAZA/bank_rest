@@ -53,10 +53,16 @@ public class AuthService {
     }
 
     public UserDTO registerUser(SignupRequest signUpRequest) {
+        // Проверка уникальности
         if (userJpaRepository.existsByUsername(signUpRequest.username())) {
-            throw new RuntimeException("Error: Username is already taken!");
+            throw new IllegalArgumentException("Имя пользователя уже занято");
         }
-
+        if (userJpaRepository.existsByEmail(signUpRequest.email())) {
+            throw new IllegalArgumentException("Email уже занят");
+        }
+        if (userJpaRepository.existsByTelephone(signUpRequest.telephone())) {
+            throw new IllegalArgumentException("Телефон уже занят");
+        }
         String hashedPassword = passwordEncoder.encode(signUpRequest.password());
         UserRole userRole;
         try {

@@ -16,15 +16,33 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    //доработать
-    public UserJpa updateUser(String username, String firstName, String surName, String patronymic, String email, String telephone, String password, String role) {
+    public UserDTO updateUser(Long userId, String username, String firstName, String surName, String patronymic, String email, String telephone, String password, String role) {
+        // Проверка уникальности
+        if (userJpaRepository.existsByUsername(username)) {
+            throw new IllegalArgumentException("Имя пользователя уже занято");
+        }
+        if (userJpaRepository.existsByEmail(email)) {
+            throw new IllegalArgumentException("Email уже занят");
+        }
+        if (userJpaRepository.existsByTelephone(telephone)) {
+            throw new IllegalArgumentException("Телефон уже занят");
+        }
         UserRole userRole;
         try {
             userRole = UserRole.valueOf(role.toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Invalid role: " + role);
         }
-        UserDTO userDTO = new UserDTO(
+        userJpaRepository.updateById(userId,
+                username,
+                firstName,
+                surName,
+                patronymic,
+                email,
+                telephone,
+                passwordEncoder.encode(password),
+                userRole);
+        return new UserDTO(
                 username,
                 firstName,
                 surName,
@@ -32,22 +50,15 @@ public class UserService {
                 email,
                 telephone
         );
-
-        UserJpa userJpa = new UserJpa(
-                username,
-                firstName,
-                surName,
-                patronymic,
-                email,
-                telephone,
-                passwordEncoder.encode(password), // Шифрование пароля
-                userRole
-        );
-        return userJpaRepository.save(userJpa);
     }
 
     public UserJpa getById(Long userId) {
         return userJpaRepository.getById(Math.toIntExact(userId));
 
+    }
+
+    public String deleteUser(Long userId) {
+        userJpaRepository.deleteById(Math.toIntExact(userId));
+        return "Ok";
     }
 }
