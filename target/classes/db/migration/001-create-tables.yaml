@@ -1,0 +1,62 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-user-table
+      author: dev
+      changes:
+        - createTable:
+            tableName: '"user"'
+            columns:
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: username
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: first_name
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: sur_name
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: patronymic
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: email
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: true
+                    unique: true
+              - column:
+                  name: telephone
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: true
+                    unique: true
+              - column:
+                  name: password
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+      rollback:
+        - dropTable:
+            tableName: '"user"'
+            cascadeConstraints: true

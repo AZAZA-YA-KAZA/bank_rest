@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: bank_rest
+
+  datasource:
+    url: jdbc:postgresql://localhost:32768/db
+    username: rootuser
+    password: rootpass
+    driver-class-name: org.postgresql.Driver
+
+    hikari:
+      maximum-pool-size: 10
+
+  sql:
+    init:
+      mode: always
+      platform: postgres
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    enabled: true
+
+jwt:
+  secret: bank0rest0project
+  expiration: 3600000  # 1 час
