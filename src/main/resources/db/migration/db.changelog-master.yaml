@@ -5,5 +5,3 @@ databaseChangeLog:
       file: db/changelog/002-add-indexes-and-constraints.yaml
   - include:
       file: db/changelog/003-seed-data.yaml
-  - include:
-      file: db/changelog/004-alter-users-add-last_login.yaml

@@ -22,4 +22,7 @@ public class RefreshTokenJpa {
         this.username = username;
         this.expiryDate = expiryDate;
     }
+
+    public RefreshTokenJpa() {
+    }
 }

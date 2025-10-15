@@ -4,6 +4,9 @@ import com.example.bankcards.util.UserRole;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Table(name = "user")
 @Entity
 @Data
@@ -24,13 +27,14 @@ public class UserJpa {
     private String email;
     @Column(name = "telephone", length = 50, unique = true)
     private String telephone;
-    @Column(name = "password", length = 50)
+    @Column(name = "password", length = 100)
     private String password;
     @Enumerated(EnumType.STRING)
     @Column(name = "role", length = 50)
     private UserRole role;
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private AccountJpa account;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CardJpa> cardJpa = new ArrayList<>();
 
 
     public UserJpa(String username, String firstName, String surName, String patronymic, String email, String telephone, String password, UserRole role) {
@@ -42,5 +46,9 @@ public class UserJpa {
         this.telephone = telephone;
         this.password = password;
         this.role = role;
+    }
+
+    public UserJpa() {
+        
     }
 }

@@ -1,65 +1,71 @@
 databaseChangeLog:
   - changeSet:
-      id: 003-seed-roles-users
+      id: 003-seed-users
       author: dev
       changes:
         - insert:
-            tableName: roles
-            columns:
-              - column:
-                  name: id
-                  valueNumeric: 1
-              - column:
-                  name: name
-                  value: ROLE_ADMIN
-
-        - insert:
-            tableName: roles
-            columns:
-              - column:
-                  name: id
-                  valueNumeric: 2
-              - column:
-                  name: name
-                  value: ROLE_USER
-
-        - insert:
-            tableName: users
-            columns:
-              - column:
-                  name: id
-                  valueNumeric: 1
-              - column:
-                  name: username
-                  value: admin
-              - column:
-                  name: password
-                  # Вставляй уже захэшированный пароль (например BCrypt). Ниже пример-заглушка.
-                  value: "$2a$10$EXAMPLEHASHEDPASSWORD"
-              - column:
-                  name: email
-                  value: admin@example.com
-              - column:
-                  name: enabled
-                  valueBoolean: true
-
-        - insert:
-            tableName: user_roles
+            tableName: user
             columns:
               - column:
                   name: user_id
                   valueNumeric: 1
               - column:
-                  name: role_id
-                  valueNumeric: 1
+                  name: username
+                  value: admin
+              - column:
+                  name: first_name
+                  value: Admin
+              - column:
+                  name: sur_name
+                  value: Adminov
+              - column:
+                  name: patronymic
+                  value: Adminovich
+              - column:
+                  name: email
+                  value: admin@example.com
+              - column:
+                  name: telephone
+                  value: +1234567890
+              - column:
+                  name: password
+                  value: "$2a$10$EXAMPLEHASHEDPASSWORD"
+              - column:
+                  name: role
+                  value: ROLE_ADMIN
+
+        - insert:
+            tableName: user
+            columns:
+              - column:
+                  name: user_id
+                  valueNumeric: 2
+              - column:
+                  name: username
+                  value: user
+              - column:
+                  name: first_name
+                  value: User
+              - column:
+                  name: sur_name
+                  value: Userov
+              - column:
+                  name: patronymic
+                  value: Userovich
+              - column:
+                  name: email
+                  value: user@example.com
+              - column:
+                  name: telephone
+                  value: +0987654321
+              - column:
+                  name: password
+                  value: "$2a$10$ANOTHERHASHEDPASSWORD"
+              - column:
+                  name: role
+                  value: ROLE_USER
 
       rollback:
         - delete:
-            tableName: user_roles
-            where: user_id = 1 and role_id = 1
-        - delete:
-            tableName: users
-            where: id = 1
-        - delete:
-            tableName: roles
-            where: id in (1,2)
+            tableName: user
+            where: user_id in (1, 2)

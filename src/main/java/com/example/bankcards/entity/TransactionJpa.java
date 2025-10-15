@@ -15,23 +15,26 @@ public class TransactionJpa {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long transactionId;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "from_account_id", referencedColumnName = "account_id")
-    private AccountJpa fromAccountId;
+    @JoinColumn(name = "from_account_id", referencedColumnName = "card_id")
+    private CardJpa fromAccountId;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "to_account_id", referencedColumnName = "account_id")
-    private AccountJpa toAccountId;
+    @JoinColumn(name = "to_account_id", referencedColumnName = "card_id")
+    private CardJpa toAccountId;
     @Column(name = "amount")
     private Long amount;
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
     private TransactionType type;
-    @Column(name = "cteate_at")
+    @Column(name = "cteated_at")
     private LocalDateTime createAt = LocalDateTime.now();
 
-    public TransactionJpa(AccountJpa fromAccountId, AccountJpa toAccountId, Long amount, TransactionType type) {
+    public TransactionJpa(CardJpa fromAccountId, CardJpa toAccountId, Long amount, TransactionType type) {
         this.fromAccountId = fromAccountId;
         this.toAccountId = toAccountId;
         this.amount = amount;
         this.type = type;
+    }
+
+    public TransactionJpa() {
     }
 }

@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface UserJpaRepository extends JpaRepository<UserJpa, Long> {
     @Query("SELECT COUNT(u) FROM UserJpa as u WHERE username = :username")
-    Boolean existsByUsername(@Param("username") String useername);
+    Boolean existsByUsername(@Param("username") String username);
 
     @Query("SELECT u FROM UserJpa AS u " +
             "WHERE username = :username")
